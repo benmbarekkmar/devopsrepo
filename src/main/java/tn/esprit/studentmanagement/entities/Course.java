@@ -1,4 +1,4 @@
-//course entity
+//course entityy
 package tn.esprit.studentmanagement.entities;
 
 import jakarta.persistence.*;
