@@ -14,13 +14,21 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh '''mvn clean package -DskipTests'''
+                sh '''mvn clean package'''
             }
         }
 
        stage('Archive Artifacts') {
             steps {
                 archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false
+            }
+        }
+
+          stage('Build docker image') {
+            steps {
+                sh """
+                    docker build -t bensalahons/student-management:latest .
+                """
             }
         }
     }
