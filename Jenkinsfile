@@ -37,13 +37,13 @@ pipeline {
     post {
 
         success {
-            mail to: 'benbrahemabir@gmail.com',
+            mail to: 'kmarb.mbarek@gmail.com',
                  subject: 'Build Successful - Jenkins CI',
                  body: 'La build a réussi avec succès.\n\nBonne journée !'
         }
 
         failure {
-            mail to: 'benbrahemabir@gmail.com',
+            mail to: 'kmarb.mbarek@gmail.com',
                  subject: ' Build Failed - Jenkins CI',
                  body: 'La build a échoué.\n\nVeuillez vérifier le pipeline.'
         }
