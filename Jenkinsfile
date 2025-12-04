@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     stages {
-       stage('Checkout') {
+
+        stage('Checkout') {
             steps {
                 checkout scmGit(
                     branches: [[name: '*/main']], 
@@ -12,24 +13,39 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Maven') {
             steps {
-                sh '''mvn clean package'''
+                sh 'mvn clean package -DskipTests'
             }
         }
 
-       stage('Archive Artifacts') {
+        stage('Archive Artifacts') {
             steps {
                 archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false
             }
         }
 
-          stage('Build docker image') {
+        stage('Build Docker image') {
             steps {
                 sh """
                     docker build -t bensalahons/student-management:latest .
                 """
             }
+        }
+    }
+
+    post {
+
+        success {
+            mail to: 'benbrahemabir@gmail.com',
+                 subject: 'Build Successful - Jenkins CI',
+                 body: 'La build a réussi avec succès.\n\nBonne journée !'
+        }
+
+        failure {
+            mail to: 'benbrahemabir@gmail.com',
+                 subject: ' Build Failed - Jenkins CI',
+                 body: 'La build a échoué.\n\nVeuillez vérifier le pipeline.'
         }
     }
 }
