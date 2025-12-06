@@ -1,8 +1,11 @@
 pipeline {
     agent any
 
-    stages {
+    environment {
+        SONARQUBE = credentials('sonar-token')
+    }
 
+    stages {
         stage('Checkout') {
             steps {
                 checkout scmGit(
@@ -16,6 +19,20 @@ pipeline {
         stage('Build Maven') {
             steps {
                 sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube-server') {
+                    sh """
+                        mvn sonar:sonar \
+                        -Dsonar.projectKey=devopsrepo \
+                        -Dsonar.projectName=devopsrepo \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.login=$SONARQUBE
+                    """
+                }
             }
         }
 
@@ -35,16 +52,14 @@ pipeline {
     }
 
     post {
-
         success {
             mail to: 'kmarb.mbarek@gmail.com',
                  subject: 'Build Successful - Jenkins CI',
                  body: 'La build a réussi avec succès.\n\nBonne journée !'
         }
-
         failure {
             mail to: 'kmarb.mbarek@gmail.com',
-                 subject: ' Build Failed - Jenkins CI',
+                 subject: 'Build Failed - Jenkins CI',
                  body: 'La build a échoué.\n\nVeuillez vérifier le pipeline.'
         }
     }
