@@ -1,4 +1,4 @@
-//department controller
+//department rest controller
 
 package tn.esprit.studentmanagement.controllers;
 
