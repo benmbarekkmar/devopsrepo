@@ -30,7 +30,8 @@ pipeline {
                         -Dsonar.projectKey=devopsrepo \
                         -Dsonar.projectName=devopsrepo \
                         -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=$SONARQUBE
+                        -Dsonar.login=$SONARQUBE \
+                        -Dsonar.javascript.lcov.reportPaths=target/site/jacoco/jacoco.xml
                     """
                 }
             }
