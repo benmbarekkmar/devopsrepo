@@ -29,7 +29,7 @@ pipeline {
                         mvn sonar:sonar \
                         -Dsonar.projectKey=devopsrepo \
                         -Dsonar.projectName=devopsrepo \
-                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.host.url=http://192.168.88.131:9000 \
                         -Dsonar.login=$SONARQUBE \
                         -Dsonar.javascript.lcov.reportPaths=target/site/jacoco/jacoco.xml
                     """
